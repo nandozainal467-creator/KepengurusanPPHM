@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Absensi Musyawarah Pondok</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --gold:#d4af37;
+    --green:#1abc9c;
+    --blue:#1e90ff;
+    --dark:#06131f;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;transition:.3s}
+body{
+    font-family:'Poppins',sans-serif;
+    background:radial-gradient(circle at top,#0d3b66,#020b14);
+    color:#fff;
+    min-height:100vh;
+    padding:40px 15px;
+}
+
+/* HEADER */
+header{text-align:center;margin-bottom:40px}
+header h1{
+    letter-spacing:4px;
+    text-shadow:0 0 12px var(--gold),0 0 25px var(--blue);
+}
+header p{color:#cde}
+#clock{color:var(--gold);margin-top:10px}
+
+/* GRID */
+.container{
+    max-width:1000px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
+}
+
+/* CARD */
+.card{
+    padding:35px 20px;
+    border-radius:25px;
+    background:linear-gradient(145deg,rgba(30,144,255,.18),rgba(26,188,156,.1));
+    border:1px solid rgba(212,175,55,.35);
+    text-align:center;
+    cursor:pointer;
+    box-shadow:0 0 20px rgba(0,0,0,.5);
+    position:relative;
+}
+.card:hover{
+    transform:translateY(-8px) scale(1.03);
+    box-shadow:0 0 25px var(--blue),0 0 35px var(--green);
+}
+.card span{color:var(--gold)}
+.card.done::after{
+    content:"✔";
+    position:absolute;
+    top:12px;
+    right:14px;
+    width:28px;height:28px;
+    background:var(--green);
+    color:#000;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* POPUP */
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.9);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:99;
+}
+.popup{
+    width:360px;
+    padding:35px;
+    border-radius:26px;
+    background:linear-gradient(160deg,#0d3b66,#06131f);
+    border:1px solid rgba(212,175,55,.4);
+    text-align:center;
+    box-shadow:0 0 30px var(--gold);
+}
+.popup h2{margin-bottom:25px}
+
+/* BUTTON */
+.popup button{
+    width:100%;
+    padding:15px;
+    margin:10px 0;
+    border:none;
+    border-radius:16px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+}
+.hadir{background:linear-gradient(135deg,#1abc9c,#16a085)}
+.izin{background:linear-gradient(135deg,#f1c40f,#d4af37);color:#000}
+.alfa{background:linear-gradient(135deg,#1e90ff,#0d3b66)}
+
+/* TOAST */
+#toast{
+    position:fixed;
+    top:20px;
+    right:-350px;
+    background:linear-gradient(135deg,#1abc9c,#1e90ff);
+    padding:14px 22px;
+    border-radius:14px;
+    box-shadow:0 0 25px rgba(0,0,0,.6);
+    z-index:200;
+}
+#toast.show{right:20px}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>ABSENSI MUSYAWARAH</h1>
+    <p>Kepengurusan Pondok Pesantren</p>
+    <p>Hidayatul Mubtadi'in</p>
+    <div id="clock"></div>
+</header>
+
+<div class="container">
+    <!-- Nama Lama -->
+    <div class="card" onclick="openPopup(this,'M. Hasanudin Zuhri')"><h3>M. Hasanudin Zuhri</h3><span>Ketua Pondok</span></div>
+    <div class="card" onclick="openPopup(this,'M. Lahum Afnan')"><h3>M. Lahum Afnan</h3><span>Wali Ketua</span></div>
+    <div class="card" onclick="openPopup(this,'Jamal')"><h3>Jamal</h3><span>Sekertaris I</span></div>
+    <div class="card" onclick="openPopup(this,'Rizal')"><h3>Rizal</h3><span>Sekertaris II</span></div>
+
+    <!-- 20 Nama Baru -->
+    <div class="card" onclick="openPopup(this,'Anam')"><h3>Anam</h3><span>Bendahara</span></div>
+    <div class="card" onclick="openPopup(this,'Harun')"><h3>Harun</h3><span>Keamanan I</span></div>
+    <div class="card" onclick="openPopup(this,'Nando')"><h3>Nando</h3><span>Keamanan II</span></div>
+    <div class="card" onclick="openPopup(this,'Mujib')"><h3>Mujib</h3><span>Keamanan III</span></div>
+    <div class="card" onclick="openPopup(this,'Taufik')"><h3>Taufik</h3><span>Seksi Pendidikan & TPQ</span></div>
+    <div class="card" onclick="openPopup(this,'ichrom')"><h3>Ichrom</h3><span>Seksi Pendidikan & TPQ</span></div>
+    <div class="card" onclick="openPopup(this,'Maftuh')"><h3>Maftuh</h3><span>Kelistrikan & Perairan</span></div>
+    <div class="card" onclick="openPopup(this,'imam')"><h3>Imam</h3><span>Kebersihan I</span></div>
+    <div class="card" onclick="openPopup(this,'Sapril')"><h3>Sapril</h3><span>Kebersihan II</span></div>
+    <div class="card" onclick="openPopup(this,'Mujib')"><h3>Mujib</h3><span>Seksi Dokumentasi</span></div>
+    <div class="card" onclick="openPopup(this,'Ridwan')"><h3>Ridwan</h3><span>Seksi Kesehatan I</span></div>
+    <div class="card" onclick="openPopup(this,'Habibi')"><h3>Habibi</h3><span>Seksi Kesehatan II</span></div>
+    <div class="card" onclick="openPopup(this,'Aan')"><h3>Aan</h3><span>Sarana & Prasarana I</span></div>
+    <div class="card" onclick="openPopup(this,'Lahum')"><h3>Lahum</h3><span>Sarana & Prasarana I</span></div>
+    <div class="card" onclick="openPopup(this,'Haidir')"><h3>Haidir</h3><span>Seksi Kegiatan</span></div>
+</div>
+
+<div class="overlay" id="popup">
+    <div class="popup">
+        <h2 id="nama"></h2>
+        <button class="hadir" onclick="kirim('Hadir')">Hadir</button>
+        <button class="izin" onclick="kirim('Izin')">Izin</button>
+        <button class="alfa" onclick="kirim('Alfa')">Alfa</button>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<!-- AUDIO -->
+<audio id="audio" preload="auto"
+src="ting.mp3"></audio>
+
+<script>
+let selectedName="", selectedCard=null;
+const audio = document.getElementById("audio");
+const toastBox=document.getElementById("toast");
+const popup=document.getElementById("popup");
+const nama=document.getElementById("nama");
+
+/* JAM */
+setInterval(()=>{
+    document.getElementById("clock").innerText=new Date().toLocaleString("id-ID",{timeStyle:"short",dateStyle:"full"});
+},1000);
+
+/* TOAST */
+function toast(msg){
+    toastBox.innerText=msg;
+    toastBox.classList.add("show");
+    setTimeout(()=>toastBox.classList.remove("show"),2500);
+}
+
+/* POPUP */
+function openPopup(card,name){
+    selectedName=name;
+    selectedCard=card;
+    nama.innerText=name;
+    popup.style.display="flex";
+    toast("📋 Pilih status kehadiran");
+}
+
+/* KIRIM */
+function kirim(status){
+    // mainkan audio dari klik tombol (user-initiated)
+    audio.currentTime = 0;
+    audio.play().catch(err=>{
+        console.log("Audio diblokir browser:", err);
+    });
+
+    // kirim ke Google Script
+    fetch("https://script.google.com/macros/s/AKfycbwIEAgOOaHOCY69wQprU0RvkG8jG4uHzujVH4pajVbdgYTBhjf2kjQWJhUeWoFeh8VJ/exec",{
+        method:"POST",
+        body:JSON.stringify({nama:selectedName,status})
+    });
+
+    selectedCard.classList.add("done");
+    popup.style.display="none";
+    toast(`✅ ${selectedName} : ${status}`);
+}
+</script>
+
+</body>
+</html>
